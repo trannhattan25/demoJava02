@@ -12,7 +12,9 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 COPY --from=build /app/target/DemoProjectJava02-0.0.1-SNAPSHOT.jar app.jar
+# EXPOSE cổng do Render yêu cầu
+EXPOSE 10000
+ENV PORT=10000
 
-EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Chạy app với cổng lấy từ biến môi trường
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=10000"]

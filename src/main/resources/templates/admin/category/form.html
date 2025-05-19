@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background-color: #cce5ff; }
+        .container { margin-top: 50px; }
+        .form-container {
+            background-color: #fbf9f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .btn-primary { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Shopping Center</a>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 form-container">
+            <h3 class="text-center" th:if="${category.categoryId != null}">Edit Category</h3>
+            <h3 class="text-center" th:unless="${category.categoryId != null}">Add Category</h3>
+
+
+            <form th:action="@{/admin/category/save}" method="post" th:object="${category}">
+                <input type="hidden" th:field="*{categoryId}"/>
+
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" required />
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></div>
+                </div>
+
+                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary">Save Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Category Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100 text-sm">
+<!-- Navigation bar -->
+<nav class="bg-gray-800 text-gray-300 text-sm font-mono flex items-center px-4 h-10 select-none">
+    <div class="flex items-center space-x-2">
+        <i class="fas fa-home"></i>
+        <span class="nav-item">Shopping Center</span>
+    </div>
+    <ul class="flex space-x-6 ml-auto text-xs font-semibold items-center">
+        <li class="nav-item cursor-pointer hover:text-white">
+            <a th:href="@{/admin/products/}">Product</a>
+
+        </li>
+        <li class="nav-item cursor-pointer hover:text-white flex items-center relative group">
+            <a th:href="@{/admin/category/}">Category</a>
+            <i class="fas fa-caret-down ml-1 text-xs"></i>
+        </li>
+        <li class="nav-item cursor-pointer hover:text-white"><a th:href="@{/logout}">Logout</a></li>
+
+        <!-- Tên người dùng -->
+        <li class="ml-4 text-white font-medium">
+            <p sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name">[username]</span>!</p>
+            <p sec:authorize="isAnonymous()">You are not logged in.</p>
+
+        </li>
+
+        <!-- Ảnh đại diện người dùng -->
+        <li class="ml-2">
+            <img src="/static/images/avatar-default.png" alt="User Avatar"
+                 class="w-8 h-8 rounded-full border border-gray-500">
+        </li>
+    </ul>
+</nav>
+<!-- Green header -->
+<header class="bg-green-500 text-white text-center py-6">
+    <h1 class="text-xl font-semibold">
+        Ellison Electronics
+    </h1>
+    <p class="text-xs mt-1">
+        We specialize in Electronics
+    </p>
+    <form class="mt-3 flex justify-center max-w-xs mx-auto">
+        <input th:value="${keyword}" name="keyword"
+               class="rounded-l px-3 py-1 text-xs text-gray-700 w-full max-w-[220px] focus:outline-none"
+               placeholder="Search Items" type="text"/>
+        <button class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 rounded-r" type="submit">
+            Search
+        </button>
+    </form>
+</header>
+<!-- Header -->
+<div class="bg-green-600 text-white py-4 shadow">
+    <div class="container mx-auto text-center">
+        <h1 class="text-2xl font-bold">Danh sách danh mục sản phẩm</h1>
+        <p class="text-sm mt-1">Quản lý danh mục sản phẩm hiện có</p>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-gray-700">Danh mục</h2>
+        <a th:href="@{/admin/category/create}"
+           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-xs">
+            <i class="fas fa-plus mr-1"></i> Thêm mới
+        </a>
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded shadow">
+        <table class="min-w-full text-left border border-gray-300">
+            <thead class="bg-green-700 text-white text-xs">
+            <tr>
+                <th class="px-4 py-2 border-r">ID</th>
+                <th class="px-4 py-2 border-r">Tên danh mục</th>
+                <th class="px-4 py-2 border-r">Mô tả</th>
+                <th class="px-4 py-2">Hành động</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-700 bg-white text-sm" th:if="${categories}">
+            <tr th:each="cat : ${categories}" class="border-t hover:bg-gray-50">
+                <td class="px-4 py-2 border-r" th:text="${cat.categoryId}">1</td>
+                <td class="px-4 py-2 border-r" th:text="${cat.name}">Điện thoại</td>
+                <td class="px-4 py-2 border-r" th:text="${cat.description}">Danh mục các sản phẩm điện thoại</td>
+                <td class="px-4 py-2 flex space-x-2">
+                    <a th:href="@{'/admin/category/edit'(id=${cat.categoryId})}"
+                       class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
+                        <i class="fas fa-edit mr-1"></i> Sửa
+                    </a>
+                    <form th:action="@{'/admin/category/delete'(id=${cat.categoryId})}" method="post"
+                          onsubmit="return confirm('Bạn có chắc chắn muốn xoá?');">
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                            <i class="fas fa-trash mr-1"></i> Xoá
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(categories)}">
+                <td colspan="4" class="text-center py-4 text-gray-500">Không có danh mục nào.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--Phaan trang-->
+<!-- Pagination -->
+<div class="flex justify-center mt-6" th:if="${totalPages > 1}">
+    <ul class="inline-flex -space-x-px text-sm">
+        <!-- Prev -->
+        <li th:if="${currentPage > 1}">
+            <a th:href="@{/admin/category/ (pageNo=${currentPage - 1}, keyword=${keyword})}"
+               class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                      rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                Prev
+            </a>
+        </li>
+
+        <!-- Page Numbers -->
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{/admin/category/ (pageNo=${i}, keyword=${keyword})}"
+               th:classappend="${i == currentPage} ?
+                   'bg-blue-500 text-white border-blue-500' :
+                   'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+               class="px-3 py-2 border border-gray-300">
+                <span th:text="${i}">1</span>
+            </a>
+        </li>
+
+        <!-- Next -->
+        <li th:if="${currentPage < totalPages}">
+            <a th:href="@{/admin/category/ (pageNo=${currentPage + 1}, keyword=${keyword})}"
+               class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                      rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                Next
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+</body>
+</html>

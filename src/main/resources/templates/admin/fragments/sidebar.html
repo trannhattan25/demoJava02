@@ -1,0 +1,10 @@
+<div th:fragment="adminSidebar" class="col-md-2 d-none d-md-block sidebar p-3 bg-dark text-white"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+    <h4 class="text-white">Admin Panel</h4>
+    <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" th:href="@{/admin/dashboard}">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-white" th:href="@{/admin/manage}">Manage Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" th:href="@{/admin/add}">Add New Product</a></li>
+        <li class="nav-item"><a class="nav-link text-white" th:href="@{/logout}">Logout</a></li>
+    </ul>
+</div>

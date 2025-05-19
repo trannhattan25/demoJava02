@@ -1,0 +1,166 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1" name="viewport"/>
+	<title>
+		Update Product
+	</title>
+	<script src="https://cdn.tailwindcss.com">
+	</script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+	<style>
+		/* Custom font and letter spacing for nav */
+         .nav-link {
+           letter-spacing: 0.15em;
+           font-family: monospace;
+         }
+	</style>
+</head>
+<body class="bg-[#e6f4e1] min-h-screen">
+<!-- Navbar -->
+<nav class="bg-[#2f3a2f] text-white flex items-center px-4 sm:px-6 md:px-10 h-12">
+	<a class="flex items-center space-x-2" href="#">
+		<i class="fas fa-home">
+		</i>
+		<span class="nav-link text-sm">
+     Shopping Center
+    </span>
+	</a>
+	<ul class="flex ml-10 space-x-6 text-xs font-mono">
+		<li>
+			<a class="nav-link hover:underline" href="#">
+				Products
+			</a>
+		</li>
+		<li class="relative group">
+			<button class="nav-link flex items-center space-x-1 focus:outline-none">
+      <span>
+       Category
+      </span>
+				<i class="fas fa-caret-down text-[10px]">
+				</i>
+			</button>
+			<ul class="absolute left-0 top-full mt-1 bg-[#2f3a2f] border border-gray-700 rounded-sm text-xs font-mono hidden group-hover:block">
+				<li>
+					<a class="block px-3 py-1 hover:bg-gray-700" href="#">
+						Category 1
+					</a>
+				</li>
+				<li>
+					<a class="block px-3 py-1 hover:bg-gray-700" href="#">
+						Category 2
+					</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="nav-link hover:underline" href="#">
+				Stock
+			</a>
+		</li>
+		<li>
+			<a class="nav-link hover:underline" href="#">
+				Shipped
+			</a>
+		</li>
+		<li>
+			<a class="nav-link hover:underline" href="#">
+				Orders
+			</a>
+		</li>
+		<li class="relative group">
+			<button class="nav-link flex items-center space-x-1 focus:outline-none">
+      <span>
+       Update Items
+      </span>
+				<i class="fas fa-caret-down text-[10px]">
+				</i>
+			</button>
+			<ul class="absolute left-0 top-full mt-1 bg-[#2f3a2f] border border-gray-700 rounded-sm text-xs font-mono hidden group-hover:block">
+				<li>
+					<a class="block px-3 py-1 hover:bg-gray-700" href="#">
+						Update 1
+					</a>
+				</li>
+				<li>
+					<a class="block px-3 py-1 hover:bg-gray-700" href="#">
+						Update 2
+					</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="nav-link hover:underline" href="#">
+				Logout
+			</a>
+		</li>
+	</ul>
+</nav>
+<!-- Search bar -->
+<div class="bg-[#3fc63f] px-4 py-2 flex justify-center">
+	<form action="#" aria-label="Search Items" class="w-full max-w-lg flex space-x-2" method="GET" role="search">
+		<input aria-label="Search Items" class="flex-grow rounded px-2 py-1 text-xs" name="search" placeholder="Search Items" type="search"/>
+		<button class="bg-[#e04c4c] text-white text-xs px-3 rounded hover:bg-[#c43f3f] focus:outline-none focus:ring-2 focus:ring-red-600" type="submit">
+			Search
+		</button>
+	</form>
+</div>
+<!-- Form container -->
+<div class="max-w-md mx-auto mt-6 p-6 bg-[#ffdfc3] rounded-lg border-2 border-black">
+	<div class="flex justify-center mb-3">
+		<img alt="Silver laptop with screen showing blue and white blurred background" class="w-[100px] h-[70px]" height="70" src="https://storage.googleapis.com/a1aa/image/8cd55d65-8bf9-4044-1379-d9b07ab3e540.jpg" width="100"/>
+	</div>
+	<h2 class="text-center text-[#3fc63f] text-lg font-semibold mb-4 font-sans">
+		Product Update Form
+	</h2>
+	<form>
+		<div class="flex flex-wrap gap-4 mb-3">
+			<div class="flex-1 min-w-[45%]">
+				<label class="block text-[10px] font-semibold mb-1" for="productName">
+					Product Name
+				</label>
+				<input class="w-full text-xs border border-gray-300 rounded px-2 py-1" id="productName" name="productName" type="text" value="HP Intel Core i5 11th Gen"/>
+			</div>
+			<div class="flex-1 min-w-[45%]">
+				<label class="block text-[10px] font-semibold mb-1" for="productType">
+					Product Type
+				</label>
+				<select class="w-full text-xs border border-gray-300 rounded px-2 py-1" id="productType" name="productType">
+					<option>
+						LAPTOP
+					</option>
+				</select>
+			</div>
+		</div>
+		<div class="mb-3">
+			<label class="block text-[10px] font-semibold mb-1" for="productDescription">
+				Product Description
+			</label>
+			<textarea class="w-full text-xs border border-gray-300 rounded px-2 py-1 resize-none" id="productDescription" name="productDescription" rows="3">Hp Laptop (8 GB/512 GB SSD/Windows 11 Home) 15s- fr4000TU Thin and Light Laptop (15.6 Inch, Natural Silver, 1.69 Kg, With MS Office)</textarea>
+		</div>
+		<div class="flex flex-wrap gap-4 mb-3">
+			<div class="flex-1 min-w-[45%]">
+				<label class="block text-[10px] font-semibold mb-1" for="unitPrice">
+					Unit Price
+				</label>
+				<input class="w-full text-xs border border-gray-300 rounded px-2 py-1" id="unitPrice" name="unitPrice" type="text" value="40990.0"/>
+			</div>
+			<div class="flex-1 min-w-[45%]">
+				<label class="block text-[10px] font-semibold mb-1" for="stockQuantity">
+					Stock Quantity
+				</label>
+				<input class="w-full text-xs border border-gray-300 rounded px-2 py-1" id="stockQuantity" name="stockQuantity" type="text" value="999"/>
+			</div>
+		</div>
+		<div class="flex justify-center space-x-3">
+			<button class="bg-[#d25a56] text-white text-xs px-3 py-1 rounded hover:bg-[#b04a48] focus:outline-none focus:ring-2 focus:ring-red-600" type="button">
+				Cancel
+			</button>
+			<button class="bg-[#3fc63f] text-white text-xs px-3 py-1 rounded hover:bg-[#34b534] focus:outline-none focus:ring-2 focus:ring-green-600" type="submit">
+				Update Product
+			</button>
+		</div>
+	</form>
+</div>
+</body>
+</html>

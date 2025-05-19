@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Form</title>
+    <!-- Bootstrap để header hiển thị đúng giao diện -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #e6ffe6;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            background-color: #ffe0b3;
+            width: 300px;
+            margin: 160px auto 80px; /* để tránh che header */
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            box-shadow: 0 0 10px #aaa;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: green;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-login {
+            background-color: #33cc33;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            background-color: #28a428;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Replace header fragment -->
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<!-- Login form -->
+<div class="login-container">
+    <h2>Login Form</h2>
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="guest@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password"  required>
+        </div>
+
+
+
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

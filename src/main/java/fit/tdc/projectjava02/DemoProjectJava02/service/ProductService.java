@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public interface ProductService {
 
+
     List<ProductModel> getAll();
 
     Boolean create(ProductModel product);
@@ -27,5 +28,7 @@ public interface ProductService {
     Page<ProductModel> searchProduct(String keyword, Integer pageNo);
 
     Page<ProductModel> getAll(Integer pageNo);
+
+    Page<ProductModel> findByCategoryId(Long categoryId, int pageNo);
 
 }

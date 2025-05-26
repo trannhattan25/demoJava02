@@ -1,98 +1,178 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Register</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/changes.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <!-- Bootstrap for proper header display -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+    background: linear-gradient(135deg, #6dd5ed, #2193b0);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: backgroundAnimation 10s ease infinite;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .registration-container {
+            background-color: #ffffff; /* White background for the form */
+            width: 350px; /* Slightly wider for better usability */
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s; /* Animation for scaling */
+        }
+
+        .registration-container:hover {
+            transform: scale(1.02); /* Slightly enlarge on hover */
+        }
+
+        .registration-container h2 {
+            text-align: center;
+            color: #333; /* Darker text for better readability */
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="address"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            border-color: #66afe9; /* Highlight border on focus */
+            outline: none;
+        }
+
+        .btn-register {
+            background-color: #28a745; /* Bootstrap success color */
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-register:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-link a {
+            color: #007bff; /* Bootstrap primary color */
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
 </head>
-<body style="background-color: #E6F9E6;">
+<body>
 
-	<%@ include file="header.jsp"%>
-	<%
-	String message = request.getParameter("message");
-	%>
-	<div class="container">
-		<div class="row"
-			style="margin-top: 5px; margin-left: 2px; margin-right: 2px;">
-
-			<form action="./RegisterSrv" method="post"
-				class="col-md-6 col-md-offset-3"
-				style="border: 2px solid black; border-radius: 10px; background-color: #FFE5CC; padding: 10px;">
-				<div style="font-weight: bold;" class="text-center">
-					<h2 style="color: green;">Registration Form</h2>
-					<%
-					if (message != null) {
-					%>
-					<p style="color: blue;">
-						<%=message%>
-					</p>
-					<%
-					}
-					%>
-				</div>
-				<div></div>
-				<div class="row">
-					<div class="col-md-6 form-group">
-						<label for="first_name">Name</label> <input type="text"
-							name="username" class="form-control" id="first_name"
-							name="first_name" required>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="last_name">Email</label> <input type="email"
-							name="email" class="form-control" id="last_name" name="last_name"
-							required>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="last_name">Address</label>
-					<textarea name="address" class="form-control" id="last_name"
-						name="last_name" required></textarea>
-				</div>
-				<div class="row">
-					<div class="col-md-6 form-group">
-						<label for="last_name">Mobile</label> <input type="number"
-							name="mobile" class="form-control" id="last_name"
-							name="last_name" required>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="last_name">Pin Code</label> <input type="number"
-							name="pincode" class="form-control" id="last_name"
-							name="last_name" required>
-					</div>
-
-				</div>
-				<div class="row">
-					<div class="col-md-6 form-group">
-						<label for="last_name">Password</label> <input type="password"
-							name="password" class="form-control" id="last_name"
-							name="last_name" required>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="last_name">Confirm Password</label> <input
-							type="password" name="confirmPassword" class="form-control"
-							id="last_name" name="last_name" required>
-					</div>
-				</div>
-				<div class="row text-center">
-					<div class="col-md-6" style="margin-bottom: 2px;">
-						<button type="Reset" class="btn btn-danger">Reset</button>
-					</div>
-					<div class="col-md-6">
-						<button type="submit" class="btn btn-success">Register</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+<!-- Replace header fragment -->
+<!--<div th:replace="fragments/header :: siteHeader"></div>-->
 
 
-	<%@ include file="footer.html"%>
+<!-- Registration form -->
+<div class="registration-container">
+    <h2>Registration Form</h2>
+    <form th:action="@{/register}" method="post">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter your username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="fullName" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="">Select your gender</option>
+                <option value="true">Male</option>
+                <option value="false">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" placeholder="Enter your address" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Telephone</label>
+            <input type="tel" name="telephone" placeholder="Enter your telephone number" required>
+        </div>
+
+        <button type="submit" class="btn-register">Create Account</button>
+    </form>
+
+    <div class="login-link">
+        <p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+    </div>
+</div>
+
 </body>
 </html>

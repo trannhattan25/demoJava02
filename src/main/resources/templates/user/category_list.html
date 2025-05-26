@@ -1,0 +1,22 @@
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="max-w-6xl mx-auto">
+  <h1 class="text-4xl font-extrabold text-gray-900 mb-10 text-center drop-shadow-sm">
+    Danh mục sản phẩm
+  </h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div th:each="cat : ${categories}" class="bg-white rounded-xl shadow-md p-6 fade-in-up hover:shadow-lg transition">
+      <h2 class="text-xl font-bold text-gray-800 mb-2" th:text="${cat.name}">Tên danh mục</h2>
+      <p class="text-gray-600 text-sm" th:text="${cat.description}">Mô tả danh mục</p>
+      <a th:href="@{'product/' + ${cat.categoryId}}"
+         class="inline-block mt-4 text-green-600 hover:text-green-800 text-sm font-semibold">
+        Xem sản phẩm &rarr;
+      </a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -27,7 +27,7 @@
             <h3 class="text-center" th:if="${product.id != null}">Edit Product</h3>
             <h3 class="text-center" th:unless="${product.id  != null}">Add Product</h3>
 
-            <form th:action="@{/admin/products/save}" method="post" enctype="multipart/form-data"
+            <form th:action="@{/admin/product/save}" method="post" enctype="multipart/form-data"
                   th:object="${product}">
                 <input type="hidden" th:field="*{id}"/>
 

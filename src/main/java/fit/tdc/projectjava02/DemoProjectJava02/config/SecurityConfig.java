@@ -17,12 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailService customUserDetailService;
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
 
-
-    @Bean
-    BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -36,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/static/**", "/fe/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/index/**").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -43,15 +41,16 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/admin/", true)
+                        .successHandler(customSuccessHandler)
                         .permitAll()
                 )
+
                 .logout(logout -> logout.permitAll().logoutSuccessUrl("login"))
                 .logout(logout -> logout
-                        .logoutUrl("/logout")  // URL để gọi logout, mặc định là /logout
-                        .logoutSuccessUrl("/login?logout")  // chuyển về trang login có thông báo logout
-                        .invalidateHttpSession(true)  // xóa session
-                        .deleteCookies("JSESSIONID")  // xóa cookie session
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
                 );;
 
@@ -61,7 +60,7 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer(){
         return ((web) -> web.debug(true).ignoring()
-                .requestMatchers("/static/**","/fe/**","/assets/**"));
+                .requestMatchers("/static/**","/fe/**","/assets/**","/register/**","/index/**"));
     }
 
 }

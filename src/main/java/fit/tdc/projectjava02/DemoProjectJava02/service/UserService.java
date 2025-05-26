@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface UserService {
     UserModel findByUsername(String userName);
+    void save(UserModel user, String roleName);
+
 
 }

@@ -19,9 +19,8 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
 import java.util.UUID;
-
 @Controller
-@RequestMapping("/admin/products")
+@RequestMapping("/admin/product")
 public class ProductController {
 
     @Autowired
@@ -33,32 +32,33 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
-    // trang chủ
+    // Trang danh sách sản phẩm
     @GetMapping("/")
-    public String dashboard(Model model,@Param("keyword")String keyword,@RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo) {
-        Page<ProductModel> listCategories = this.productService.getAll(pageNo);
+    public String dashboard(Model model, @Param("keyword") String keyword,
+                            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
+        Page<ProductModel> listProducts = this.productService.getAll(pageNo);
 
         if (keyword != null) {
-            listCategories = this.productService.searchProduct(keyword, pageNo);
+            listProducts = this.productService.searchProduct(keyword, pageNo);
             model.addAttribute("keyword", keyword);
         }
-        model.addAttribute("totalPages",listCategories.getTotalPages());
-        model.addAttribute("currentPage",pageNo);
-        model.addAttribute("categories",listCategories  );
+
+        model.addAttribute("totalPages", listProducts.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("categories", listProducts); // Tên `categories` đã dùng trong view
 
         return "admin/product/list";
     }
 
-    // Thêm
+    // Hiển thị form thêm sản phẩm
     @GetMapping("/create")
     public String showAddForm(Model model) {
         model.addAttribute("product", new ProductModel());
-        List<CategoryModel> listCate = this.categoryService.getAll();
-        model.addAttribute("listCate", listCate);
-
+        model.addAttribute("listCate", categoryService.getAll());
         return "admin/product/form";
     }
 
+    // Lưu sản phẩm mới
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute("product") @Valid ProductModel product,
                               BindingResult result,
@@ -69,18 +69,17 @@ public class ProductController {
             return "admin/product/form";
         }
 
-        // Nếu là update (id != null), lấy ảnh cũ
         if (product.getId() != null) {
             ProductModel existing = productService.findById(product.getId());
             if (existing != null && file.isEmpty()) {
-                product.setImageUrl(existing.getImageUrl()); // Giữ ảnh cũ
+                product.setImageUrl(existing.getImageUrl());
             }
         }
 
         if (!file.isEmpty()) {
             String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
             try {
-                storageService.store(file, filename); // Bạn cần xử lý lỗi trong store()
+                storageService.store(file, filename);
                 product.setImageUrl(filename);
             } catch (RuntimeException e) {
                 model.addAttribute("uploadError", "Không thể lưu file: " + e.getMessage());
@@ -89,20 +88,21 @@ public class ProductController {
             }
         }
 
-        productService.create(product); // Có thể là create/update đều dùng chung
-        return "redirect:/admin/products/";
+        productService.create(product);
+        return "redirect:/admin/product/";
     }
 
-    //Sửa
-    @GetMapping("/edit")
-    public String edit(@RequestParam("id") Long id, Model model) {
-        ProductModel product = this.productService.findById(id);
-        List<CategoryModel> listCate = this.categoryService.getAll();
-        model.addAttribute("listCate", listCate);
+    // Hiển thị form sửa sản phẩm
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        ProductModel product = productService.findById(id);
         model.addAttribute("product", product);
+        model.addAttribute("listCate", categoryService.getAll());
         return "admin/product/form";
     }
-    @PostMapping("/edit-product")
+
+    // Cập nhật sản phẩm
+    @PostMapping("/update")
     public String update(@ModelAttribute("product") @Valid ProductModel product,
                          BindingResult result,
                          @RequestParam("productImage") MultipartFile file,
@@ -113,11 +113,9 @@ public class ProductController {
             return "admin/product/form";
         }
 
-        // Lấy thông tin cũ từ DB
         ProductModel oldProduct = productService.findById(product.getId());
 
         if (!file.isEmpty()) {
-            // Nếu người dùng chọn ảnh mới, thì lưu ảnh mới
             String originalFileName = file.getOriginalFilename();
             String extension = originalFileName != null && originalFileName.contains(".")
                     ? originalFileName.substring(originalFileName.lastIndexOf("."))
@@ -127,26 +125,17 @@ public class ProductController {
             storageService.store(file, newFileName);
             product.setImageUrl(newFileName);
         } else {
-            // Nếu không chọn ảnh mới, giữ lại ảnh cũ
             product.setImageUrl(oldProduct.getImageUrl());
         }
 
-        if (productService.create(product)) {
-            return "redirect:/admin/products/";
-        }
-
-        model.addAttribute("listCate", categoryService.getAll());
-        return "admin/product/form";
+        productService.create(product);
+        return "redirect:/admin/product/";
     }
 
-
-
-
-    //Xóa
-    @PostMapping("/delete")
-    public String delete(@RequestParam("id") Long id) {
+    // Xóa sản phẩm
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id) {
         productService.delete(id);
-        return "redirect:/admin/products/";
+        return "redirect:/admin/product/";
     }
-
 }

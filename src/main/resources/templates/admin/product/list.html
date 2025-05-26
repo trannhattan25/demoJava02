@@ -67,104 +67,82 @@
 </header>
 <!-- Stock Products Table -->
 <section class="bg-green-50 p-4">
-    <h2 class="text-green-800 font-bold text-center mb-2 text-lg">
+    <h2 class="text-green-800 font-bold text-center mb-4 text-xl">
         Stock Products
     </h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-300 text-xs text-left">
-            <thead class="bg-green-700 text-white">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-gray-700">Sản phẩm2</h2>
+        <a th:href="@{/admin/product/create}"
+           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-xs">
+            <i class="fas fa-plus mr-1"></i> Thêm mới
+        </a>
+    </div>
+    <div class="overflow-x-auto rounded-lg shadow-md">
+        <table class="min-w-full divide-y divide-gray-300 text-sm">
+            <thead class="bg-green-600 text-white">
             <tr>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Image
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    ProductId
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Name
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Type
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Price
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Sold Qty
-                </th>
-                <th class="py-2 px-3 font-semibold border-r border-green-800">
-                    Stock Qty
-                </th>
-                <th class="py-2 px-3 font-semibold">
-                    Actions
-                </th>
+                <th class="px-4 py-3 text-left font-semibold">Image</th>
+                <th class="px-4 py-3 text-left font-semibold">Product ID</th>
+                <th class="px-4 py-3 text-left font-semibold">Name</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Price</th>
+                <th class="px-4 py-3 text-left font-semibold">Sold Qty</th>
+                <th class="px-4 py-3 text-left font-semibold">Stock Qty</th>
+                <th class="px-4 py-3 text-center font-semibold">Actions</th>
             </tr>
             </thead>
-            <tbody class="bg-white">
-            <tr class="border-b border-gray-300">
-                <td class="py-2 px-3 border-r border-gray-300">
-                    <img alt="Purple back of APPLE iPhone 13 Pro" class="inline-block" height="40" src="https://storage.googleapis.com/a1aa/image/d1846457-972a-419f-9109-98edf596f282.jpg" width="40"/>
+            <tbody class="divide-y divide-gray-200 bg-white">
+            <tr class="hover:bg-gray-100 transition">
+                <td class="px-4 py-2">
+                    <img src="https://storage.googleapis.com/a1aa/image/d1846457-972a-419f-9109-98edf596f282.jpg"
+                         alt="Product" class="w-10 h-10 object-cover rounded"/>
                 </td>
-                <td class="py-2 px-3 border-r border-gray-300 text-blue-700 hover:underline cursor-pointer">
+                <td class="px-4 py-2 text-blue-600 font-medium hover:underline cursor-pointer">
                     P20230423082243
                 </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    APPLE iPhone 13 Pro (Grap..
-                </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    MOBILE
-                </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    125999.0
-                </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    2
-                </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    999
-                </td>
-                <td class="py-2 px-3 space-x-2">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded">
-                        <a class="nav-link text-white" th:href="@{/admin/update}">Update</a>
-                    </button>
-                    <button class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded">
+                <td class="px-4 py-2">APPLE iPhone 13 Pro (Grap..</td>
+                <td class="px-4 py-2">MOBILE</td>
+                <td class="px-4 py-2">125999.0</td>
+                <td class="px-4 py-2">2</td>
+                <td class="px-4 py-2">999</td>
+                <td class="px-4 py-2 text-center space-x-2">
+                    <a th:href="@{/admin/product/update}"
+                       class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
+                        Update
+                    </a>
+                    <button
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
                         Remove
                     </button>
                 </td>
             </tr>
 
-            <tr th:each="product:${categories}">
-                <td class="py-2 px-3 border-r border-gray-300">
-                    <img  th:src="@{/assets/upload/{img}(img=${product.imageUrl})}" alt="realme NEO 80 cm (32 inch) TV colorful screen" class="inline-block" height="40" width="40"/>
+            <!-- Dòng động từ Thymeleaf -->
+            <tr th:each="product : ${categories}" class="hover:bg-gray-100 transition">
+                <td class="px-4 py-2">
+                    <img th:src="@{'/assets/upload/' + ${product.imageUrl}}"
+                         alt="Product" class="w-10 h-10 object-cover rounded"/>
                 </td>
-
-                <td th:text="${product.id}" class="py-2 px-3 border-r border-gray-300 text-blue-700 hover:underline cursor-pointer">
-
-                </td>
-                <td th:text="${product.name}" class="py-2 px-3 border-r border-gray-300">
-
-                </td>
-                <td th:text="${product.category.name}" class="py-2 px-3 border-r border-gray-300">
-
-                </td>
-                <td th:text="${product.price}" class="py-2 px-3 border-r border-gray-300">
-                </td>
-                <td th:text="${product.stockQty}" class="py-2 px-3 border-r border-gray-300">
-
-                </td>
-                <td class="py-2 px-3 border-r border-gray-300">
-                    998
-                </td>
-                <td class="py-2 px-3 space-x-2">
-                        <a th:href="@{'/admin/products/edit'(id=${product.id})}"
-                           class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
-                            <i class="fas fa-edit mr-1"></i> Sửa
-                        </a>
-                    <form th:action="@{'/admin/products/delete'(id=${product.id})}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá?');">
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
-                            <i class="fas fa-trash mr-1"></i> Xoá
+                <td th:text="${product.id}" class="px-4 py-2 text-blue-600 font-medium hover:underline cursor-pointer"></td>
+                <td th:text="${product.name}" class="px-4 py-2"></td>
+                <td th:text="${product.category.name}" class="px-4 py-2"></td>
+                <td th:text="${product.price}" class="px-4 py-2"></td>
+                <td th:text="${product.stockQty}" class="px-4 py-2"></td>
+                <td class="px-4 py-2">998</td>
+                <td class="px-4 py-2 text-center space-x-2">
+                    <a th:href="@{'/admin/product/edit/' + ${product.id}}"
+                       class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
+                        Update
+                    </a>
+                    <form th:action="@{'/admin/product/delete/' + ${product.id}}" method="post" class="inline"
+                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                        <input type="hidden" name="id" th:value="${product.id}" />
+                        <button type="submit"
+                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
+                            Remove
                         </button>
                     </form>
+
                 </td>
             </tr>
             </tbody>
@@ -176,7 +154,7 @@
     <ul class="inline-flex -space-x-px text-sm">
         <!-- Prev -->
         <li th:if="${currentPage > 1}">
-            <a th:href="@{/admin/products/ (pageNo=${currentPage - 1}, keyword=${keyword})}"
+            <a th:href="@{/admin/product/ (pageNo=${currentPage - 1}, keyword=${keyword})}"
                class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                       rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
                 Prev
@@ -185,7 +163,7 @@
 
         <!-- Page Numbers -->
         <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <a th:href="@{/admin/products/ (pageNo=${i}, keyword=${keyword})}"
+            <a th:href="@{/admin/product/ (pageNo=${i}, keyword=${keyword})}"
                th:classappend="${i == currentPage} ?
                    'bg-blue-500 text-white border-blue-500' :
                    'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
@@ -196,7 +174,7 @@
 
         <!-- Next -->
         <li th:if="${currentPage < totalPages}">
-            <a th:href="@{/admin/products/ (pageNo=${currentPage + 1}, keyword=${keyword})}"
+            <a th:href="@{/admin/product/ (pageNo=${currentPage + 1}, keyword=${keyword})}"
                class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                       rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                 Next

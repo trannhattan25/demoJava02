@@ -120,8 +120,9 @@
             <!-- Dòng động từ Thymeleaf -->
             <tr th:each="product : ${categories}" class="hover:bg-gray-100 transition">
                 <td class="px-4 py-2">
-                    <img th:src="@{'/assets/upload/' + ${product.imageUrl}}"
+                    <img th:src="${product.imageUrl}"
                          alt="Product" class="w-10 h-10 object-cover rounded"/>
+
                 </td>
                 <td th:text="${product.id}" class="px-4 py-2 text-blue-600 font-medium hover:underline cursor-pointer"></td>
                 <td th:text="${product.name}" class="px-4 py-2"></td>

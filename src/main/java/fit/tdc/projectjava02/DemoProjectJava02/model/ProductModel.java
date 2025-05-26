@@ -24,7 +24,8 @@ public class ProductModel {
 
     @Min(value = 0, message = "Số lượng phải >= 0")
     private int stockQty;
-
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String imageUrl;

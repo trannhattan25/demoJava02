@@ -6,7 +6,7 @@
         <!-- Product Image -->
         <div class="md:flex-shrink-0 flex justify-center mb-8 md:mb-0">
             <img
-                    th:src="@{'/assets/upload/' + ${product.imageUrl}}"
+                    th:src="${product.imageUrl}"
                     alt="Product Image"
                     class="rounded-3xl object-cover w-80 h-80 image-zoom shadow-xl"
                     width="400"
@@ -22,9 +22,7 @@
                     Product Name
                 </h1>
 
-                <p class="text-gray-700 text-lg leading-relaxed mb-8 max-w-xl"
-                   th:text="${product.description}">
-                </p>
+
 
                 <div class="text-4xl font-extrabold text-indigo-600 mb-10 drop-shadow-lg"
                      th:text=" ${product.price} +' Vnd'">
@@ -46,10 +44,15 @@
             </div>
 
             <div>
-                <button type="button"
-                        class="btn-primary px-8 py-3 rounded-full text-xl font-semibold shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-indigo-300">
-                    Add to Cart
-                </button>
+                <form th:action="@{/index/cart/add}" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+            <div class="text-gray-700 text-lg leading-relaxed mb-8 max-w-xl"
+               th:utext="${product.description}">
             </div>
         </div>
     </div>

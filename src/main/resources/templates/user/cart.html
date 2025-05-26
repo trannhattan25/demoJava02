@@ -1,0 +1,57 @@
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="flex-grow max-w-6xl mx-auto p-6">
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-8 drop-shadow-md">Your Shopping Cart</h1>
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+        <div class="space-y-6">
+            <!-- Cart Item 1 -->
+            <div class="space-y-6" th:each="item : ${cart.items}">
+                <div class="flex items-center space-x-6">
+                    <img th:src="${item.product.imageUrl}" th:alt="${item.product.name}"
+                         class="w-24 h-24 rounded-2xl object-cover shadow-lg"/>
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-semibold text-gray-900" th:text="${item.product.name}">Product Name</h2>
+                        <p class="text-indigo-600 text-lg font-bold"
+                           th:text="${item.product.price + ' VND'}">Price</p>
+
+                        <p class="text-gray-600">Quantity: <span th:text="${item.quantity}">1</span></p>
+                        <p class="text-sm text-gray-500" th:text="'In stock: ' + ${item.product.stockQty}"></p>
+                        <p class="text-red-600 text-sm font-semibold"
+                           th:if="${item.quantity > item.product.stockQty}">
+                            Not enough stock available!
+                        </p>
+                    </div>
+                    <div class="text-lg font-semibold text-gray-900 min-w-[120px] text-right"
+                         th:text="${(item.product.price * item.quantity) + ' VND'}">
+                        <div th:text="${item.product.price * item.quantity + ' VND'}"
+                             class="text-right font-semibold min-w-[120px]"></div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="mt-10 border-t border-gray-300 pt-6 flex justify-between items-center text-2xl font-bold text-gray-900">
+            <span>Total:</span>
+            <span th:text="${totalPrice} + ' VND'">0 VND</span>
+
+        </div>
+        <div class="mt-8 flex justify-end">
+            <form th:action="@{/index/cart/checkout}" method="get">
+                <button type="submit"
+                        class="btn-primary px-8 py-3 rounded-full text-xl font-semibold shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-indigo-300">
+                    Thanh toán
+                </button>
+            </form>
+
+
+        </div>
+    </div>
+</main>
+</body>
+</html>

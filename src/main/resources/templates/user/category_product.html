@@ -14,7 +14,7 @@
              th:style="'animation-delay: ' + (${iterStat.index} * 0.15) + 's'">
       <a th:href="@{'/detail?id=' + ${product.id}}">
 
-      <img th:src="@{'/uploads/' + ${product.imageUrl}}"
+      <img th:src="${product.imageUrl}"
            alt="Ảnh sản phẩm"
            class="rounded-xl object-cover w-full h-48 mb-4 image-zoom shadow-md" />
 

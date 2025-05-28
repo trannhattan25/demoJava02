@@ -41,6 +41,7 @@ public class CartModel {
         newItem.setCart(this);
         items.add(newItem);
     }
+
     public void updateProductQuantity(ProductModel product, int quantity) {
         for (CartItem item : items) {
             if (item.getProduct().getId().equals(product.getId())) {
@@ -64,6 +65,7 @@ public class CartModel {
                 .mapToInt(CartItem::getQuantity)
                 .sum();
     }
+
     public void clearItems() {
         items.clear();
     }

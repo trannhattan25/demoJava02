@@ -1,0 +1,43 @@
+<html th:fragment="navbar" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Category Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100 text-sm">
+<!-- Navigation bar -->
+<nav class="bg-gray-800 text-gray-300 text-sm font-mono flex items-center px-4 h-10 select-none">
+    <div class="flex items-center space-x-2">
+        <i class="fas fa-home"></i>
+        <span class="nav-item">Shopping Center</span>
+    </div>
+    <ul class="flex space-x-6 ml-auto text-xs font-semibold items-center">
+        <li class="nav-item cursor-pointer hover:text-white">
+            <a th:href="@{/admin/product/}">Product</a>
+
+        </li><li class="nav-item cursor-pointer hover:text-white">
+            <a th:href="@{/admin/orders/}">Order</a>
+
+        </li>
+        <li class="nav-item cursor-pointer hover:text-white flex items-center relative group">
+            <a th:href="@{/admin/category/}">Category</a>
+            <i class="fas fa-caret-down ml-1 text-xs"></i>
+        </li>
+        <li class="nav-item cursor-pointer hover:text-white"><a th:href="@{/logout}">Logout</a></li>
+
+        <!-- Tên người dùng -->
+        <li class="ml-4 text-white font-medium">
+            <p sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name">[username]</span>!</p>
+            <p sec:authorize="isAnonymous()">You are not logged in.</p>
+
+        </li>
+
+        <!-- Ảnh đại diện người dùng -->
+        <li class="ml-2">
+            <img src="/static/images/avatar-default.png" alt="User Avatar"
+                 class="w-8 h-8 rounded-full border border-gray-500">
+        </li>
+    </ul>
+</nav>

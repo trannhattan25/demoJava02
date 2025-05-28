@@ -10,7 +10,7 @@ public interface CartService {
     CartModel getCartByUser(UserModel user);
     void clearCart(UserModel user);
 
-    boolean addProductToCart(UserModel user, ProductModel product);
+    boolean addProductToCart(UserModel user, ProductModel product, int quantity);
 
     void updateProductQuantity(UserModel user, ProductModel product, int quantity);
 

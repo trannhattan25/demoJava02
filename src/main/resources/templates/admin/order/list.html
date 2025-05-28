@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Quản Lý Đơn Hàng - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<!-- Navbar -->
+<div th:replace="admin/fragments/navbar :: navbar"></div>
+
+<main class="flex-grow max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-8 drop-shadow-md">Quản Lý Đơn Hàng</h1>
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+        <!-- Hiển thị thông báo lỗi hoặc thành công -->
+        <div th:if="${error}" class="text-red-600 text-lg mb-4" th:text="${error}"></div>
+        <div th:if="${success}" class="text-green-600 text-lg mb-4" th:text="${success}"></div>
+
+        <!-- Trường hợp không có đơn hàng -->
+        <div th:if="${orders.isEmpty()}" class="text-center text-gray-500 text-lg">
+            Hiện tại không có đơn hàng nào.
+        </div>
+
+        <!-- Danh sách đơn hàng -->
+        <div th:unless="${orders.isEmpty()}" class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã Đơn
+                        Hàng
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Người
+                        Đặt
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày
+                        Đặt
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng
+                        Tiền
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng
+                        Thái
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành
+                        Động
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <tr th:each="order : ${orders}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                        th:text="${order.id}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600" th:text="${order.user.fullName}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                        th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                        th:text="${order.totalAmount} + ' VND'"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+            <span
+                    th:text="${order.status}"></span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <a th:href="@{/admin/orders/detail(id=${order.id})}"
+                           class="text-indigo-600 hover:text-indigo-800 mr-4">Chi Tiết</a>
+                        <form th:action="@{/admin/orders/update-status}" method="post" class="inline">
+                            <input type="hidden" name="orderId" th:value="${order.id}"/>
+                            <select name="status" class="border border-gray-300 rounded-md px-2 py-1">
+                                <option value="PENDING" th:selected="${order.status == 'PENDING'}">Đang xử lý</option>
+                                <option value="CONFIRMED" th:selected="${order.status == 'CONFIRMED'}">Đã xác nhận
+                                </option>
+                                <option value="SHIPPED" th:selected="${order.status == 'SHIPPED'}">Đã giao</option>
+                                <option value="DELIVERED" th:selected="${order.status == 'DELIVERED'}">Đã nhận</option>
+                                <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Đã hủy</option>
+                            </select>
+                            <button type="submit" class="btn-secondary px-3 py-1 rounded-md ml-2">Cập nhật</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

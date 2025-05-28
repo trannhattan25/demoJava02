@@ -1,54 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>
-        Product Stocks
-    </title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <style>
-        /* Custom font spacing for nav items */
-         .nav-item {
-           letter-spacing: 0.2em;
-         }
-    </style>
-</head>
-<body class="bg-white">
-<!-- Top browser pink bar mimic -->
-<div class="bg-pink-300 h-8 w-full">
-</div>
-<!-- Navigation bar -->
-<nav class="bg-gray-800 text-gray-300 text-sm font-mono flex items-center px-4 h-10 select-none">
-    <div class="flex items-center space-x-2">
-        <i class="fas fa-home"></i>
-        <span class="nav-item">Shopping Center</span>
-    </div>
-    <ul class="flex space-x-6 ml-auto text-xs font-semibold items-center">
-        <li class="nav-item cursor-pointer hover:text-white">Products</li>
-        <li class="nav-item cursor-pointer hover:text-white flex items-center relative group">
-            <a th:href="@{/admin/category/}">Category</a>
-            <i class="fas fa-caret-down ml-1 text-xs"></i>
-        </li>
-        <li  class="nav-item cursor-pointer hover:text-white"><a th:href="@{/logout}">Logout</a></li>
-
-        <!-- Tên người dùng -->
-        <li class="ml-4 text-white font-medium">
-            <p sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name">[username]</span>!</p>
-            <p sec:authorize="isAnonymous()">You are not logged in.</p>
-
-        </li>
-
-        <!-- Ảnh đại diện người dùng -->
-        <li class="ml-2">
-            <img src="/static/images/avatar-default.png" alt="User Avatar"
-                 class="w-8 h-8 rounded-full border border-gray-500">
-        </li>
-    </ul>
-</nav>
+<!-- Navbar -->
+<div th:replace="admin/fragments/navbar :: navbar"></div>
 
 <!-- Green header -->
 <header class="bg-green-500 text-white text-center py-6">
@@ -92,37 +43,17 @@
             </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-            <tr class="hover:bg-gray-100 transition">
-                <td class="px-4 py-2">
-                    <img src="https://storage.googleapis.com/a1aa/image/d1846457-972a-419f-9109-98edf596f282.jpg"
-                         alt="Product" class="w-10 h-10 object-cover rounded"/>
-                </td>
-                <td class="px-4 py-2 text-blue-600 font-medium hover:underline cursor-pointer">
-                    P20230423082243
-                </td>
-                <td class="px-4 py-2">APPLE iPhone 13 Pro (Grap..</td>
-                <td class="px-4 py-2">MOBILE</td>
-                <td class="px-4 py-2">125999.0</td>
-                <td class="px-4 py-2">2</td>
-                <td class="px-4 py-2">999</td>
-                <td class="px-4 py-2 text-center space-x-2">
-                    <a th:href="@{/admin/product/update}"
-                       class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
-                        Update
-                    </a>
-                    <button
-                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-medium shadow">
-                        Remove
-                    </button>
-                </td>
-            </tr>
+
 
             <!-- Dòng động từ Thymeleaf -->
             <tr th:each="product : ${categories}" class="hover:bg-gray-100 transition">
                 <td class="px-4 py-2">
-                    <img th:src="${product.imageUrl}"
-                         alt="Product" class="w-10 h-10 object-cover rounded"/>
-
+                    <div class="flex space-x-1 overflow-x-auto max-w-[120px]">
+                        <div th:each="img : ${product.productImages}" class="shrink-0">
+                            <img th:src="${img.imageUrl}" alt="Product Image"
+                                 class="w-10 h-10 object-cover rounded border border-gray-300 shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out"/>
+                        </div>
+                    </div>
                 </td>
                 <td th:text="${product.id}" class="px-4 py-2 text-blue-600 font-medium hover:underline cursor-pointer"></td>
                 <td th:text="${product.name}" class="px-4 py-2"></td>
@@ -143,7 +74,6 @@
                             Remove
                         </button>
                     </form>
-
                 </td>
             </tr>
             </tbody>

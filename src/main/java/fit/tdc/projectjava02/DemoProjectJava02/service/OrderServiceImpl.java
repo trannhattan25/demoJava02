@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -20,6 +22,35 @@ public class OrderServiceImpl implements OrderService {
         this.productRepository = productRepository;
     }
 
+
+
+    @Override
+    public List<OrderModel> findAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public OrderModel findById(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public void updateOrderStatus(Long orderId, String status) {
+        OrderModel order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Đơn hàng không tồn tại"));
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderModel> findOrdersByUser(UserModel user) {
+        return orderRepository.findByUser(user);
+    }
+
+    @Override
+    public OrderModel findByIdAndUser(Long orderId, UserModel user) {
+        return orderRepository.findByIdAndUser(orderId, user).orElse(null);
+    }
     @Override
     @Transactional
     public boolean createOrder(UserModel user, CartModel cart,
@@ -54,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCity(city);
         order.setRecipientName(fullName);
         order.setRecipientEmail(email);
-        order.setStatus("Pending");
+        order.setStatus("PENDING");
         order.setPaymentMethod(paymentMethod);
 
         double totalAmount = 0;

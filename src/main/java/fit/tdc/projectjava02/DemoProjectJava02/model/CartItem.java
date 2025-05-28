@@ -27,4 +27,9 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private CartModel cart;
+    // Custom constructor for ProductModel and quantity
+    public CartItem(ProductModel product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
 }

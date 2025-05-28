@@ -52,15 +52,16 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
-                );;
+                );
+        ;
 
         return httpSecurity.build();
     }
 
     @Bean
-    WebSecurityCustomizer webSecurityCustomizer(){
+    WebSecurityCustomizer webSecurityCustomizer() {
         return ((web) -> web.debug(true).ignoring()
-                .requestMatchers("/static/**","/fe/**","/assets/**","/register/**"));
+                .requestMatchers("/static/**", "/fe/**", "/assets/**", "/register/**"));
     }
 
 }

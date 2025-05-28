@@ -109,20 +109,25 @@
     <aside class="bg-white rounded-3xl shadow-xl p-8 h-fit">
       <h2 class="text-2xl font-semibold text-gray-900 mb-6">Order Summary</h2>
       <div class="space-y-4 text-gray-700 text-lg">
-        <!-- Lặp qua các sản phẩm trong giỏ hàng -->
-        <div th:each="item : ${cart.items}" class="flex justify-between">
-          <span th:text="${item.product.name} + ' x ' + ${item.quantity}">Product Name x Qty</span>
+        <div th:if="${cart.items.isEmpty()}" class="text-center text-gray-500">
+          Giỏ hàng của bạn đang trống.
+        </div>
+        <div th:each="item : ${cart.items}" class="flex items-center space-x-4">
+          <img th:src="${item.product.productImages[0]?.imageUrl} ?: '/images/fallback.jpg'"
+               alt="Product Image"
+               class="w-16 h-16 object-cover rounded"
+               onerror="this.src='/images/fallback.jpg'" />
+          <div class="flex-1">
+            <span th:text="${item.product.name} + ' x ' + ${item.quantity}">Product Name x Qty</span>
+          </div>
           <span th:text="${item.product.price * item.quantity} + ' VND'" class="font-semibold text-gray-900">Price</span>
         </div>
-
-        <!-- Tổng tiền -->
-        <div class="border-t border-gray-300 pt-4 flex justify-between font-bold text-gray-900 text-xl">
+        <div th:if="${!cart.items.isEmpty()}" class="border-t border-gray-300 pt-4 flex justify-between font-bold text-gray-900 text-xl">
           <span>Total</span>
           <span th:text="${totalPrice} + ' VND'">0 VND</span>
         </div>
       </div>
-    </aside>
-  </div>
+    </aside>  </div>
 </main>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Danh Sách Đơn Hàng - Cửa Hàng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .btn-primary {
+        background-color: #4f46e5;
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #4338ca;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="flex-grow max-w-6xl mx-auto p-6">
+  <h1 class="text-4xl font-extrabold text-gray-900 mb-8 drop-shadow-md">Danh Sách Đơn Hàng</h1>
+  <div class="bg-white rounded-3xl shadow-xl p-8">
+    <!-- Hiển thị thông báo lỗi nếu có -->
+    <div th:if="${error}" class="text-red-600 text-lg mb-4" th:text="${error}"></div>
+
+    <!-- Trường hợp không có đơn hàng -->
+    <div th:if="${orders.isEmpty()}" class="text-center text-gray-500 text-lg">
+      Bạn chưa có đơn hàng nào.
+      <a th:href="@{/index}" class="text-indigo-600 hover:underline">Tiếp tục mua sắm</a>.
+    </div>
+
+    <!-- Danh sách đơn hàng -->
+    <div th:unless="${orders.isEmpty()}" class="space-y-6">
+      <div th:each="order : ${orders}" class="border-b border-gray-200 pb-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900" th:text="'Mã đơn hàng: ' + ${order.id}"></h2>
+            <p class="text-gray-600" th:text="'Ngày đặt: ' + ${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></p>
+            <p class="text-gray-600" th:text="'Tổng tiền: ' + ${order.totalAmount} + ' VND'"></p>
+            <p class="text-gray-600" th:text="'Trạng thái: ' + ${order.status}"></p>
+          </div>
+          <a th:href="@{/index/orders/detail(id=${order.id})}"
+             class="btn-primary px-6 py-2 rounded-full text-lg font-semibold shadow hover:shadow-lg">
+            Xem chi tiết
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

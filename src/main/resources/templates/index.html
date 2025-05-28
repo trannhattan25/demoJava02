@@ -24,8 +24,10 @@
                  class="rounded-xl shadow-lg p-5 flex flex-col items-center text-center transition-transform transform hover:scale-105 duration-300">
             <a th:href="@{'detail?id=' + ${product.id}}"
                class="w-full flex flex-col items-center bg-gradient-to-br from-white to-green-50 rounded-xl p-4 border border-green-200 hover:shadow-xl transition-shadow duration-300">
-                <img th:src="${product.imageUrl}" alt="Product Image"
-                     class="mb-4 w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-md"/>
+                <div th:if="${product.productImages != null and #lists.size(product.productImages) > 0}">
+                    <img th:src="${product.productImages[0].imageUrl}" alt="Product Image" class="mb-4 w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-md" />
+                </div>
+
 
                 <h3 class="text-sm font-bold text-green-700 uppercase mb-1 tracking-wide"
                     th:text="${product.name}">Product Name</h3>

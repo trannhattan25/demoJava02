@@ -58,24 +58,38 @@ public class CartController {
 
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam("productId") Long productId, Authentication authentication, Model model) {
+    public String addToCart(@RequestParam("productId") Long productId,
+                            @RequestParam(value = "quantity", defaultValue = "1") int quantity,
+                            Authentication authentication, Model model) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }
 
-        UserModel user = userService.findByUsername(authentication.getName());
+        String username = authentication.getName();
+        UserModel user = userService.findByUsername(username);
+        if (user == null) {
+            model.addAttribute("error", "Không tìm thấy người dùng.");
+            return "redirect:/login";
+        }
+
         ProductModel product = productService.findById(productId);
-
         if (product == null) {
-            return "redirect:/index"; // hoặc trang lỗi
+            model.addAttribute("error", "Sản phẩm không tồn tại.");
+            return "redirect:/index";
         }
 
-        boolean success = cartService.addProductToCart(user, product);
+        if (quantity <= 0 || quantity > product.getStockQty()) {
+            model.addAttribute("error", "Số lượng không hợp lệ hoặc vượt quá tồn kho (" + product.getStockQty() + ").");
+            return "redirect:/detail?id=" + productId;
+        }
+
+        boolean success = cartService.addProductToCart(user, product, quantity);
         if (!success) {
-            model.addAttribute("error", "Số lượng vượt quá tồn kho hiện có.");
-            return "redirect:/index/cart/";
+            model.addAttribute("error", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+            return "redirect:/detail?id=" + productId;
         }
 
+        model.addAttribute("success", "Đã thêm " + quantity + " " + product.getName() + " vào giỏ hàng.");
         return "redirect:/index/cart/";
     }
 

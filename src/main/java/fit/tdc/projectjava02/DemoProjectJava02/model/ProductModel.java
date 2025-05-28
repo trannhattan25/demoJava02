@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -28,7 +31,8 @@ public class ProductModel {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String imageUrl;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId")

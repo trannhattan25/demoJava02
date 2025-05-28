@@ -1,6 +1,7 @@
 package fit.tdc.projectjava02.DemoProjectJava02.controller.admin;
 
 import fit.tdc.projectjava02.DemoProjectJava02.model.CategoryModel;
+import fit.tdc.projectjava02.DemoProjectJava02.model.ProductImage;
 import fit.tdc.projectjava02.DemoProjectJava02.model.ProductModel;
 import fit.tdc.projectjava02.DemoProjectJava02.service.CategoryService;
 import fit.tdc.projectjava02.DemoProjectJava02.service.ProductService;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Controller
@@ -62,33 +64,35 @@ public class ProductController {
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute("product") @Valid ProductModel product,
                               BindingResult result,
-                              @RequestParam("productImage") MultipartFile file,
+                              @RequestParam("images") MultipartFile[] files,
                               Model model) {
-        // debug thử
-        System.out.println("Description: " + product.getDescription());
         if (result.hasErrors()) {
+            System.out.println("lỗi"+result.getAllErrors());
             model.addAttribute("listCate", categoryService.getAll());
             return "admin/product/form";
         }
 
-        if (product.getId() != null) {
-            ProductModel existing = productService.findById(product.getId());
-            if (existing != null && file.isEmpty()) {
-                product.setImageUrl(existing.getImageUrl());
+
+        List<ProductImage> imageList = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                try {
+                    String imageUrl = storageService.store(file, UUID.randomUUID().toString());
+                    ProductImage image = new ProductImage();
+                    image.setImageUrl(imageUrl);
+                    image.setProduct(product); // liên kết ngược
+                    imageList.add(image);
+                } catch (RuntimeException e) {
+                    model.addAttribute("uploadError", "Không thể lưu file: " + e.getMessage());
+                    model.addAttribute("listCate", categoryService.getAll());
+                    return "admin/product/form";
+                }
             }
         }
 
-        if (!file.isEmpty()) {
-            try {
-                // Upload file lên Cloudinary, lấy URL ảnh
-                String imageUrl = storageService.store(file, UUID.randomUUID().toString());
-                product.setImageUrl(imageUrl);
-            } catch (RuntimeException e) {
-                model.addAttribute("uploadError", "Không thể lưu file: " + e.getMessage());
-                model.addAttribute("listCate", categoryService.getAll());
-                return "admin/product/form";
-            }
-        }
+        product.setProductImages(imageList);
+
 
         productService.create(product);
         return "redirect:/admin/product/";
@@ -107,7 +111,7 @@ public class ProductController {
     @PostMapping("/update")
     public String update(@ModelAttribute("product") @Valid ProductModel product,
                          BindingResult result,
-                         @RequestParam("productImage") MultipartFile file,
+                         @RequestParam("images") MultipartFile file,
                          Model model) {
 
         if (result.hasErrors()) {
@@ -120,15 +124,23 @@ public class ProductController {
         if (!file.isEmpty()) {
             try {
                 String imageUrl = storageService.store(file, UUID.randomUUID().toString());
-                product.setImageUrl(imageUrl);
+                ProductImage image = new ProductImage();
+                image.setImageUrl(imageUrl);
+                image.setProduct(product);
+
+                List<ProductImage> newImages = new ArrayList<>();
+                newImages.add(image);
+
+                product.setProductImages(newImages);
             } catch (RuntimeException e) {
                 model.addAttribute("uploadError", "Không thể lưu file: " + e.getMessage());
                 model.addAttribute("listCate", categoryService.getAll());
                 return "admin/product/form";
             }
         } else {
-            product.setImageUrl(oldProduct.getImageUrl());
+            product.setProductImages(oldProduct.getProductImages()); // giữ lại ảnh cũ
         }
+
 
 
         productService.create(product);
